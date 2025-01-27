@@ -1,0 +1,56 @@
+<div class="main-container">
+  <div class="container">
+    <div class="slider-container" *ngIf="imagesCount > 0">
+      <div class="slider">
+        <div
+          class="list"
+          [style.transform]="'translateX(-' + currentIndex * 1000 + 'px)'">
+          <img *ngFor="let image of images" [src]="image" alt="image" />
+        </div>
+    
+        <div class="buttons">
+          <button id="prev" (click)="prevSlide()">&#8249;</button>
+          <button id="next" (click)="nextSlide()">&#8250;</button>
+        </div>
+    
+        <ul class="dots">
+          <li
+            *ngFor="let dot of images; let i = index"
+            [class.active]="i === currentIndex"
+            (click)="goToSlide(i)"
+          ></li>
+        </ul>
+      </div>
+    </div>
+    <div class="values-container">
+      <h1>Dane podstawowe</h1>
+      <table class="values-table">
+        <tr><th>Tytuł</th><td>{{expertise?.title}}</td></tr>
+        <tr><th>Wycena</th><td>{{expertise?.valuation}}</td></tr>
+        <tr><th>Opis</th><td>{{expertise?.description}}</td></tr>
+        <tr><th>Ekspert</th><td>{{expertise?.ownerEmail}}</td></tr>
+        <tr><th>Subkategoria</th><td>{{expertise?.subCategoryName}}</td></tr>
+      </table>      
+    </div>
+
+    <div class="attributes-container">
+      <h1>Atrybuty</h1>
+      <table class="attributes-table">
+        <thead>
+          <tr>
+            <th>Typ Atrybutu</th>
+            <th>Wartość</th>
+            <th>Jednostka</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let attribute of expertise?.attributes">
+            <td>{{ attribute.attributeTypeName }}</td>
+            <td>{{ attribute.value }}</td>
+            <td>{{ attribute.unitName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

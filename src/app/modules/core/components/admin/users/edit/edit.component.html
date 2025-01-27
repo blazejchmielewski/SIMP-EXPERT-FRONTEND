@@ -1,0 +1,58 @@
+<div class="main-container">
+    <div class="green-line"></div>
+    <button class="back-admin-panel" (click)="backToAdminPanel()">
+        <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#0F8435"><path d="m480-320 56-56-64-64h168v-80H472l64-64-56-56-160 160 160 160Zm0 240q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+    </button>
+    <div class="biography-container" *ngIf="user">
+        <h1>Dane osobowe</h1>
+        <form [formGroup]="userUpdateForm" (ngSubmit)="onUserEdit()">
+            <div class="boxes-container">
+                <div class="box box-01 header">Imię</div>
+                <div class="box box-02 header">Nazwisko</div>
+                <div class="box box-03 header">Miasto</div>
+                <div class="box box-04 header">Rola</div>
+                <div class="box box-05 header">Telefon</div>
+                <div class="box box-06 header">Email</div>
+                <div class="box box-07 header">Data urodzenia</div>
+                <div class="box box-08 header">Status:</div>
+                <div class="box box-09"></div>
+                <div class="box box-11"><input type="text" formControlName="firstname" [(ngModel)]="user.firstname" /></div>
+                <div class="box box-12"><input type="text" formControlName="lastname" [(ngModel)]="user.lastname"/></div>
+                <div class="box box-13"><input type="text" formControlName="city" [(ngModel)]="user.city"/></div>
+                <div class="box box-14">: {{user.department}}</div>
+                <div class="box box-15"><input type="text" formControlName="phone" [(ngModel)]="user.phone" placeholder="123456789"/></div>
+                <div class="box box-16">: {{user.email}}</div>
+                <div class="box box-17"><input type="date" formControlName="birthday" [(ngModel)]="user.birthday" [value]="user.birthday | date:'yyyy-MM-dd'"/></div>
+                <div class="box box-18">: {{translateStatus(user.status)}}</div>
+            </div>
+            <div class="button-container">
+                <button class="update" type="submit">Zaktualizuj dane osobowe</button>
+            </div>
+        </form>
+    </div>
+    <div class="balance">
+      <h2>Saldo: <span [ngClass]="balance >= 0 ? 'green': 'red'">{{balance}} zł</span></h2>
+    </div>
+    <div class="financial-container">
+      <table class="financial-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Typ transakcji</th>
+            <th>Kwota</th>
+            <th>Komentarz</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let financial of financials">
+            <td>{{ financial.id }}</td>
+            <td>{{ translateFinancialType(financial.financialType.name) }}</td>
+            <td>{{ financial.amount + ' zł' }}</td>
+            <td>{{ financial.comment }}</td>
+            <td>{{ financial.timestamp | date: 'dd/MM/yyyy' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>    
+</div> 

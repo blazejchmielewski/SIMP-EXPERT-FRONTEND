@@ -1,0 +1,276 @@
+
+.container {
+    margin: 50px 0 50px 0;
+    min-width: 1000px;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+.table-container {
+    width: 90%;
+    margin-bottom: 50px;
+}
+
+.filter-container {
+    min-width: 500px;
+}
+
+.top-container{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items:top;
+    text-align: center;
+}
+
+.btn-container{
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 0.5em 0;
+    border-radius: 5px;
+    width: 40%;
+    color: white;
+    border: none;
+    transition: all .3s ease-in-out;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    cursor: pointer;
+}
+
+.edit:hover{
+    background-color: #6FCC67;
+}
+
+.block:hover {
+    background-color: #e60000;
+}
+
+.unlock:hover {
+    background-color: #28B2C9;
+}
+
+.edit {
+    background-color: #5FBB46;
+}
+
+.block {
+    background-color: #ff4d4d;;
+}
+
+.unlock {
+    background-color: #17a2b8;
+}
+
+.top-container {
+    display: flex;
+    width: 100%;
+    padding: 30px 10px;
+}
+
+.add-user-container {
+    width: 20%;
+    padding: 0 15px;
+    display: flex;
+    justify-content: center;
+    align-items: top;
+}
+
+.add-user {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 75%;
+    padding: 20px 0;
+    border-radius: 5px;
+    background-color: #0F8435;
+    cursor: pointer;
+    font-size: 15px;
+    border: none;
+    color: white;
+    transition: all .3s ease-in-out;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.add-user:hover {
+    background-color: #1d834c;;
+}
+
+
+/* ---------------- DODANIE UŻYTKOWNIKA----------------*/
+.register-container{
+    position: relative;
+    background-color: #fff;
+    padding: 1.5em 4em;
+    border-radius: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .close-container{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: block;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .close svg{
+            fill: black;
+        }
+    }
+
+    .input{
+        padding: 0.6em 0;
+    }
+
+    input[type='text'], input[type='password']{
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0.6em 1em;
+        border-radius: 5px;
+        border: none;
+        font-size: 1rem;
+        background-color: #D1ECF1;
+    }
+    input[type='text']:focus,input[type='password']:focus{
+        outline: 2px solid #B0CAD0;
+    }
+    h1{
+        font-size: 1.5rem;
+        margin: 10px 0 25px 0;
+        text-align: center;
+    }
+    .btn{
+        width: 100%;
+        padding: 0.7em 1.2em;
+        color: #fff;
+        background-color: #0C5460;
+        cursor: pointer;
+    }
+    .btn:hover{
+        background-color: #1D6571;
+    }
+}
+
+/* ---------------- BLOCK/UNLOCK USER CONTAINER ----------------*/
+.grey-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.dialog-user-container{
+    display: flex;
+    justify-content: top;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-25%, -25%);
+    height: 150px;
+    width: 300px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.close{
+    cursor: pointer;
+}
+
+.close-container{
+    display: block;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.block-user-container svg:hover{
+    cursor: pointer;
+}
+
+.block-confirm {
+    font-size: 1rem;
+    text-align: center;
+    padding: 10px;
+    color: #721c24;
+    padding: 10px;
+}
+
+.name-delete{
+    font-weight: 700;
+}
+
+.btn{
+    display: block;
+    padding: 0.5em 1.5em;
+    border: none;
+    border-radius: 0.2em;
+    font-size: inherit;
+    cursor: pointer;
+    box-shadow: 0px 0px 2px grey;
+    color: #fff;
+    transition: 0.2s ease-in-out all;
+}
+
+.container-blue{
+    color: #0C5460;
+    background-color: #D1ECF1;
+
+    svg{
+        fill: #0C5460;
+    }
+    .block-confirm{
+        color: #0C5460;
+    }
+    .btn{
+        background-color: #17a2b8;
+    }
+    .btn:hover{
+        background-color: #069097;
+    }
+    .name-delete{
+        color: #069097;
+    }
+}
+
+.container-red{
+    color: #721c24;
+    background-color: #f8d7da;
+
+    svg{
+        fill: #721c24;
+    }
+    .block-confirm{
+        color: #721c24;
+    }
+    .btn{
+        background-color: #721c24;
+    }
+
+    .btn:hover{
+        background-color: #500A02;
+    }
+
+    .name-delete{
+        color: #500A02;
+    }
+}
+
+.container-green{
+    background-color: #069097;
+}

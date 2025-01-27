@@ -1,0 +1,41 @@
+
+<body>
+    <div class="wrapper">
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+            <h1>Rejestracja</h1>
+            <div class="form-input input-box">
+                <input type="text" placeholder="Imię" required [formControl]="controls.firstname">
+                <mat-error *ngIf="controls.firstname.invalid" class="error">{{getErrorMessage(controls.firstname)}}</mat-error>
+            </div>
+            <div class="form-input input-box">
+                <input type="text" placeholder="Nazwisko" required [formControl]="controls.lastname">
+                <mat-error *ngIf="controls.lastname.invalid" class="error">{{getErrorMessage(controls.lastname)}}</mat-error>
+            </div>
+            <div class="form-input input-box">
+                <input type="text" placeholder="E-mail" required [formControl]="controls.email">
+                <mat-error *ngIf="controls.email.invalid" class="error">{{getErrorMessage(controls.email)}}</mat-error>
+            </div>
+            <div class="form-input input-box">
+                <input type="password" placeholder="Hasło" required [formControl]="controls.password">
+                <mat-error *ngIf="controls.password.invalid" class="error">{{getErrorMessage(controls.password)}}</mat-error>
+            </div>
+            <div class="form-input input-box">
+                <input type="password" placeholder="Potwierdź hasło" required [formControl]="controls.repeatedPassword">
+                <mat-error *ngIf="controls.repeatedPassword.invalid" class="error">{{getErrorMessage(controls.repeatedPassword)}}</mat-error>
+            </div>
+            <button type="submit" class="btn" [disabled]="registerForm.invalid">Utwórz konto</button>
+            <div class="alert-warning alert-dismissible fade show" role="alert">
+                {{notMatchingPasswordsError}}
+                <button type="button" class="btn-close" *ngIf="notMatchingPasswordsError" data-bs-dismiss="alert" aria-label="Close" 
+                    (click)="notMatchingPasswordsError">
+                </button>
+            </div>
+            <div class="alert-warning alert-dismissible fade show" role="alert" *ngIf="errorMsg$ | async as error">
+                {{ error }}
+            </div>
+            <div class="register-link">
+                <p>Masz już konto? <a routerLink="/logowanie">Zaloguj się</a></p>
+            </div>
+        </form>
+    </div>
+</body>

@@ -1,0 +1,302 @@
+<div class="home-container">
+  <div class="navigation">
+    <div class="nav-up-conent">
+      <div class="navigation-content-container">
+       <div class="nav-ball">
+        <button class="nav-ball-content third" (click)="moveForward(1)">1</button>
+       </div>
+      </div>
+      <div class="line-container">
+       <div class="line-content"></div>
+      </div>
+
+      <div class="navigation-content-container">
+        <div class="nav-ball">
+          <button class="nav-ball-content third" (click)="moveForward(2)">2</button>     
+        </div>
+      </div>
+
+      <div class="line-container">
+        <div class="line-content"></div>
+      </div>
+
+      <div class="navigation-content-container">
+        <div class="nav-ball">
+          <button class="nav-ball-content third" (click)="moveForward(3)">3</button>
+        </div>
+      </div>
+     
+      <div class="line-container">
+        <div class="line-content"></div>
+      </div>
+
+      <div class="navigation-content-container">
+        <div class="nav-ball">
+          <button class="nav-ball-content third" (click)="moveForward(4)">4</button>
+        </div>
+      </div>
+
+      <div class="line-container">
+        <div class="line-content"></div>
+      </div>
+
+      <div class="navigation-content-container">
+        <div class="nav-ball">
+          <button class="nav-ball-content third" (click)="moveForward(5)">5</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-up-conent">
+      <div class="nav-content-container">
+        <p>Dane podstawowe</p>
+      </div>
+      <div class="nav-content-container">
+        <p>Atrybuty przedmiotu ekspertyzy</p>
+      </div>
+      <div class="nav-content-container">
+        <p>Dokumentacja fotograficzna</p>
+      </div>
+      <div class="nav-content-container">
+        <p>Porównanie i Wycena</p>
+      </div>
+      <div class="nav-content-container">
+        <p>Dokumentacja Tekstowa</p>
+      </div>
+    </div>
+ </div>
+
+<!-- ------------------------1------------------------ -->
+  <div class="container" *ngIf="firstPageOpen">
+    <h1>Tworzenie Ekspertyzy</h1>
+    <form [formGroup]="initCreateExpertiseForm" (ngSubmit)="expertiseGetBaseData()">
+      <div class="form-group">
+        <label for="title">Tytuł</label>
+        <input type="text" id="title" name="title" [formControl]="controls.title" placeholder="Wprowadź tytuł">
+        {{errorMsg}}
+      </div>
+      <div class="form-group">
+          <label for="description">Opis</label>
+          <textarea id="description" name="description" [formControl]="controls.description" placeholder="Wprowadź opis" rows="4"></textarea>
+          <div>{{errorMsg}}</div>
+      </div>
+      <div class="form-group categories">
+        <label for="categoryName">Kategoria</label>
+        <div>
+        <select id="categoryName" name="categoryName" [formControl]="controls.subCategoryName" (change)="changeCategory($event)">
+          <option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+          <button class="add" (click)="openCategoryModal()">Dodaj kategorie</button>
+          {{errorMsg}}
+        </div>
+        <label for="subCategoryName" class="margin-top">Podkategoria</label>
+        <div> 
+          <select id="subCategoryName" name="subCategoryName" [formControl]="controls.subCategoryName">
+            <option *ngFor="let subcategory of filteredSubcategories" [value]="subcategory.name">
+              {{ subcategory.name }}
+            </option>
+          </select>
+          <button class="add" (click)="openSubCategoryModal()">Dodaj Podkategorie</button>
+          {{errorMsg}}
+        </div>
+      </div>
+      <div class="button-container">
+        <button type="submit" class="button">Przejdź dalej</button>
+      </div>
+      
+    </form>
+    </div>
+  </div>
+
+<!-- ------------------------2------------------------ -->
+<div class="container2" *ngIf="secondPageOpen">
+  <h1>Dodaj Atrybuty</h1>
+  <form [formGroup]="initCreateAttribute" (ngSubmit)="addAttribute()">
+    <div class="form-group categories">
+      <label for="attrubteTypeName">Wybierz nazwę</label>
+      <div>
+        <select id="attributeTypeName" name="attributeTypeName" [formControl]="attributeControls.attributeTypeName" (change)="onAttributeTypeChange($event)">
+          <option *ngFor="let attribute of attributeTypes" [value]="attribute.name">
+            {{ attribute.name }}
+          </option>
+        </select>
+        
+        <button class="add" type="button" (click)="openAttributeTypeModal()">Nowy Atrybut</button>
+      </div>
+
+      <div class="form-group">
+        <label for="newCategoryName" style="margin-top: 10px;">Podaj wartość</label>
+        <input type="text" id="newCategoryName" [formControl]="attributeControls.value" name="newCategoryName" required>
+      </div>
+
+      <label for="newCategoryName">Wybierz jednostkę</label>
+      <div>
+        <select id="unitTypeName" name="unitTypeName" [formControl]="attributeControls.unitName">
+          <option *ngFor="let unit of units" [value]="unit?.name">
+            {{ unit.name }}
+          </option>
+        </select>
+      </div>
+      <div class="button-container">
+        <button class="button" style="margin-top: 30px; margin-bottom: 20px;">Dodaj</button>
+      </div>
+      
+    </div>
+    <table style="margin-bottom: 30px;">
+      <thead>
+        <tr>
+          <th style="width: 30%">Nazwa</th>
+          <th style="width: 35%">Wartość</th>
+          <th style="width: 25%">Jednostka</th>
+          <th style="width: 10%">Usuń</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let attribute of attributes; let i = index">
+          <td>{{attribute.attributeTypeName}}</td>
+          <td>{{attribute.value}}</td>
+          <td>{{attribute.unitName}}</td>
+          <td>
+            <div class="cancle-button" (click)="removeAttribute(i)">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FF6666">
+                <path
+                 d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0-83-31.5-156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
+                />
+              </svg>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="button-container">
+      <button type="button" class="button" (click)="moveForward(3)">Przejdź dalej</button>
+    </div>
+  </form>
+  <div class="error-cotaniner">
+    {{errorMsg}}
+  </div>
+</div>
+
+<!-- ------------------------3------------------------ -->
+<div class="container3" *ngIf="thirdPageOpen">
+  <div>
+    <h1>Dodaj zdjęcia do swojej dokumentacji</h1>
+  </div>
+  <div class="image-picker-container">
+    <button class="image-picker-button" (click)="fileInput.click()">Wybierz</button>
+    <input
+      #fileInput
+      type="file"
+      multiple
+      (change)="onFileSelected($event)"
+      style="display: none"/>
+  </div>
+
+  <div class="images-container">
+    <div class="photo-card" *ngFor="let image of images; let i = index">
+      <div class="image-background" [ngStyle]="{'background-image': 'url(' + image + ')'}"></div>
+      <div class="cancle-button" (click)="removeImage(i)">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FF6666">
+          <path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0-83-31.5-156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
+  <div class="button-container3">
+    <button type="submit" class="button" (click)="moveForward(5)">Przejdź dalej</button>
+  </div>
+</div>
+
+<!--------------------------4-------------------------->
+<div class="container5" *ngIf="fourthPageOpen">
+  <p>ez2</p>
+</div>
+
+<!--------------------------5-------------------------->
+<div class="container5" *ngIf="fifthPageOpen">
+  <div class="input-container">
+    <label for="expertise-file" class="file-label">Przekaż plik expertyzy Word/PDF</label>
+    <input
+      id="expertise-file"
+      type="file"
+      hidden
+      (change)="onExpertiseFileSelected($event)"
+    />
+    <div *ngIf="expertiseFile" class="file-name">
+      <p>Wybrano plik:</p><span>{{ expertiseFile.name }}</span>
+    </div>
+  </div>
+  <div class="button-container5">
+    <button type="submit" class="button" (click)="createExpertise()">Zakończ</button>
+  </div>
+</div>
+
+<!-- ------------------------MODALS------------------------ -->
+
+<!--------------------------1-------------------------->
+  <div class="modal" *ngIf="isCategoryModalOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeCategoryModal()">&times;</span>
+      <h2>Dodaj Kategorię</h2>
+      <form [formGroup]="initCreateCategory" (ngSubmit)="addCategory()">
+        <div class="form-group">
+          <label for="newCategoryName">Nazwa kategorii</label>
+          <input type="text" id="newCategoryName" [formControl]="categoryControls.name" name="newCategoryName" placeholder="Wprowadź nazwę kategorii" required>
+        </div>
+        <button type="submit" class="button">Dodaj Kategorię</button>
+        <p>{{errorMsg}}</p>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="isSubCategoryModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeCategoryModal()">&times;</span>
+    <h2>Dodaj podkategorię</h2>
+    <form [formGroup]="initCreateSubCategory" (ngSubmit)="addSubCategory()">
+      <div class="form-group">
+        <label for="categoryName" class="mt-5">Nazwa kategorii głównej</label>
+        <select id="categoryName" name="categoryName" [formControl]="subCategoryControls.categoryName" (change)="changeCategory($event)">
+          <option *ngFor="let category of categories" [value]="category.name">
+            {{ category.name }}
+          </option>
+        </select>
+        <div style="margin-top: 10px"></div>
+        <label for="newCategoryName" class="mt-5">Nazwa podkategorii</label>
+        <input type="text" id="name" [formControl]="subCategoryControls.name" name="newCategoryName" placeholder="Wprowadź nazwę podkategorii" required>
+      </div>
+      <button type="submit" class="button">Dodaj Podkategorię</button>
+      <p>{{errorMsg}}</p>
+    </form>
+  </div>
+  </div>
+<!--------------------------2-------------------------->
+  <div class="modal" *ngIf="isAttributeTypeModalOpen">
+  <div class="modal-content modal-att">
+    <span class="close" (click)="closeAttributeTypeModal()">&times;</span>
+    <h2>Dodaj nowy atrybut</h2>
+    
+    <form [formGroup]="initCreateAttributeType" (ngSubmit)="addAttributeType()">
+      <div class="form-group">
+        <label for="newAttributeTypeName">Nazwa atrybutu</label>
+        <input type="text" id="newAttributeTypeName" [formControl]="attributeTypeControls.attributeTypeName" name="newAttributeTypeName" placeholder="Wprowadź nazwę atrybutu" required>
+        <select class="att-select" id="unitType" name="unitType" [formControl]="attributeTypeControls.unitTypeId" (change)="changeUnitType($event)">
+          <option *ngFor="let unitType of unitTypes" [value]="unitType.id">
+            {{ unitType.name }}
+          </option>
+        </select>
+      </div>
+      <button type="submit" class="button button-att">Dodaj Atrybut</button>
+      <p>{{errorMsg}}</p>
+    </form>
+    <div>
+      <p>Możliwe jednostki: <strong>{{unitsNames}}</strong></p>
+    </div>
+  </div>
+</div>

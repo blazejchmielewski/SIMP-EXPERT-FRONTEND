@@ -1,0 +1,104 @@
+<div id="main-container">
+  <div id="creating-container">
+    <div id="creating-wrapper">
+      <div class="creating-card special-border">
+        <h2>Utwórz ekspertyzę</h2>
+        <button (click)="navigateToCreate()">Utwórz</button>
+      </div>
+      <div class="creating-card special-border">
+        <h2>Dodaj kategorię</h2>
+        <button (click)="openCategoryModal()">Dodaj</button>
+      </div>
+      <div class="creating-card special-border">
+        <h2>Dodaj podkategorię</h2>
+        <button (click)="openSubCategoryModal()">Dodaj</button>
+      </div>
+      <div class="creating-card">
+        <h2>Dodaj atrybut</h2>
+        <button (click)="openAttributeTypeModal()">Dodaj</button>
+      </div>
+  </div>
+  <div class="my-expertises-header">
+    <h1>Moje ekspertyzy</h1>
+  </div>
+  <div id="expertises-container">
+    
+    <div class="expertise-wrapper" *ngFor="let expertise of expertises">
+      <div class="expertise-card">
+        <div class="image-container">
+          <img *ngIf="expertise.image" [src]="'data:image/jpeg;base64,' + expertise.image" alt="Image" />
+        </div>
+        <h2>{{ expertise.title }}</h2>
+        <div class="key-value-grid">
+          <p><strong>Podkategoria:</strong></p>
+          <p>{{ expertise.subCategoryName }}</p>
+          <p><strong>Wartość:</strong></p>
+          <p>{{ expertise.valuation }}zł</p>
+          <p><strong>Ekspert:</strong></p>
+          <p>{{ expertise.ownerEmail }}</p>
+        </div>
+        <div>
+          {{errorMsg}}
+        </div>
+        <button class="details-btn" (click)="navigateToDetails(expertise.expertiseUuid)">Szczegóły</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- --------------------- MODALS --------------------- -->
+<!-- ------- CATEGORY ------- -->
+<div class="modal" *ngIf="isCategoryModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeCategoryModal()">&times;</span>
+    <h2>Dodaj nowy atrybut</h2>
+    <form [formGroup]="initCreateCategory" (ngSubmit)="addCategory()">
+      <div class="form-group">
+        <label for="newCategoryName">Nazwa kategorii</label>
+        <input type="text" id="newCategoryName" [formControl]="categoryControls.name" name="newCategoryName" placeholder="Wprowadź nazwę kategorii" required>
+      </div>
+      <button type="submit" class="button">Dodaj Kategorię</button>
+      <p>{{errorMsg}}</p>
+    </form>
+  </div>
+</div>
+
+<!-- ------- SUBCATEGORY ------- -->
+<div class="modal" *ngIf="isSubCategoryModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeCategoryModal()">&times;</span>
+    <h2>Dodaj podkategorię</h2>
+    <form [formGroup]="initCreateSubcategory" (ngSubmit)="addSubCategory()">
+      <div class="form-group">
+        <label for="categoryName" class="mt-5">Kategoria główna</label>
+        <select id="categoryName" name="categoryName" [formControl]="subCategoryControls.categoryName" (change)="changeCategory($event)">
+          <option *ngFor="let category of categories" [value]="category.name">
+            {{ category.name }}
+          </option>
+        </select>
+        <div style="margin-top: 10px"></div>
+        <label for="newCategoryName" class="mt-5">Nazwa podkategorii</label>
+        <input type="text" id="name" [formControl]="subCategoryControls.name" name="newCategoryName" placeholder="Wprowadź nazwę podkategorii" required>
+      </div>
+      <button type="submit" class="button">Dodaj Podkategorię</button>
+      <p>{{errorMsg}}</p>
+    </form>
+  </div>
+</div>
+
+<!-- ------- ATTRIBUTETYPE ------- -->
+ <div class="modal" *ngIf="isAttributeTypeModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeAttributeTypeModal()">&times;</span>
+    <h2>Dodaj nowy atrybut</h2>
+    <form [formGroup]="initCreateCategory" (ngSubmit)="addAttribute()">
+      <div class="form-group">
+        <label for="newCategoryName">Nazwa kategorii</label>
+        <input type="text" id="newCategoryName" [formControl]="categoryControls.name" name="newCategoryName" placeholder="Wprowadź nazwę kategorii" required>
+      </div>
+      <button type="submit" class="button">Dodaj Kategorię</button>
+      <p>{{errorMsg}}</p>
+    </form>
+  </div>
+</div>
+

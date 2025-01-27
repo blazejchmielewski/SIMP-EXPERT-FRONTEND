@@ -1,0 +1,4 @@
+<p *ngIf="!errorMessage">Trwa aktywacja konta</p>
+<div class="alert-warning alert-dismissible fade show" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+</div>

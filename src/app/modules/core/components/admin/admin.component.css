@@ -1,0 +1,131 @@
+.content {
+    margin-top: 35px;
+    padding: 10px;
+    min-height: 650px;
+}
+
+.card-holder {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 -1em;
+    padding: 0px 150px;
+}
+
+.card {
+    height: 400px;
+    width: 300px;
+    background-color: #fefefe;
+    text-align: center;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.card-top-content {
+    height: 33%;
+    background-color: #0c723b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-container {
+    position: absolute;
+    left: 50%;
+    top: 33%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    outline: 1px solid #151618;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.circle-container.user-icon img {
+    width: 170px;
+    height: 170px;
+    margin-top: 38px;
+    object-fit: cover; 
+    border-radius: 50%; 
+}
+
+.circle-container.calendar-icon img {
+    width: 130px;
+    height: 130px;
+    margin-top: 38px;
+    object-fit: cover;  
+}
+
+.circle-container.edit-icon img {
+    width: 140px;
+    height: 140px;
+    margin-top: 30px;
+    object-fit: cover; 
+    
+}
+
+.circle-container.permission-icon img {
+    width: 60px;
+    height: 60px;
+    margin-top: 22px;
+    margin-left: 5px;
+    object-fit: cover;
+    
+}
+
+.circle-container.wallet-icon img {
+    width: 60px;
+    height: 60px;
+    margin-top: 22px;
+    margin-left: 1px;
+    object-fit: cover;
+}
+
+.card-top-content img {
+    width: 67%;
+    height: 50%;
+}
+
+.btn-form {
+    margin-top: 20px;
+    width: 80%;
+    height: 30px;
+    color: white;
+    background-color: #0c723b;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.2s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.btn-form:hover {
+    background-color: #1d835c;
+}
+
+.plus:hover {
+    fill: #63E6BE;
+    transition: fill 0.3s ease;
+}
+
+.card-bottom-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: fit-content;
+    height: 66%;
+    padding: 0 25px;
+    background-color: #fff;
+    
+}
+
+.card-bottom-content button{
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.card-bottom-content p {
+    width: 100%;
+}

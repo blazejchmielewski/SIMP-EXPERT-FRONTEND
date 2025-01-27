@@ -1,0 +1,23 @@
+<div class="container" *ngIf="!isLoginPage 
+&& !isRegisterPage 
+&& !isPasswordRecoveryPage 
+&& !isPasswordRecoveryFormPage
+&& !isDefaultPage
+&& !isNoAccessPage;
+else authLayout">
+  <app-header></app-header>
+  <div class="container2">
+    <div class="move">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  
+</div>
+
+<ng-template #authLayout>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+</ng-template>
+
+<app-spinner></app-spinner>

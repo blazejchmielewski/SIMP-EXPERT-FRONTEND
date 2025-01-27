@@ -1,0 +1,190 @@
+a{
+    text-decoration: none;
+}
+
+.container{
+    max-width: 1200px;
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+
+}
+
+.left-container{
+    width: 30%;
+    color: white;
+}
+
+.upper-content-container{
+    background-color: #0F8435;
+    box-sizing: border-box;
+    border-radius: 10px 10px 0 0;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0px 0px 2px grey;
+}
+
+.name-container{
+    margin-top: 20px;
+    text-align: center;
+    line-height: 5px;
+}
+
+.name{
+    font-size: 1.1rem;
+}
+
+.email{
+    font-size: 0.7rem;
+}
+
+.change-panel-card{
+    font-size: 0.8rem;
+    color: #555;
+    padding: 0.7em 1em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s ease-in-out all;
+    border: 1px solid #ddd;
+    border-top: none;
+}
+
+.change-panel-card.change-panel-active {
+    border-left: none;
+}
+
+.active-container{
+    position: absolute;
+    width: 10px;
+    background-color: #0F8435;
+    height: calc(100% + 1px);
+    top: -1px;
+    left: -1px;
+}
+
+.change-panel-card svg {
+    margin-right: 10px;
+    fill: #555;
+}
+
+.change-panel-active{
+    background-color: #EEE;
+    overflow: hidden;
+}
+
+.change-panel-card:hover{
+    background-color: #EEE;
+}
+
+/* ---------------------------- PRAWA STRONA ---------------------------- */
+.right-main-container{
+    max-width: calc(1200px - 300px - 100px);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0px 0px 2px grey;
+}
+
+.green-line{
+    width: 100%;
+    height: 40px;
+    background-color: #0F8435;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.biography-container{
+    padding: 10px 20px;
+    color: #555;
+    background-color: white;
+}
+/* -------------- GRID-TEMPLATE --------------*/
+
+.boxes-container {
+    display: grid;
+    grid-template-areas: 
+        "box-01 box-11 box-9 box-02 box-12"
+        "box-03 box-13 box-9 box-04 box-14"
+        "box-05 box-15 box-9 box-06 box-16"
+        "box-07 box-17 box-9 box-08 box-18";
+    grid-template-columns: 0.5fr 1fr 0.2fr 0.3fr 1fr;
+    width: 100%;
+}
+
+.box {
+    padding: 10px 0px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.header{
+    font-weight: 700;
+}
+
+.box-01 { grid-area: box-01; }
+.box-02 { grid-area: box-02; }
+.box-03 { grid-area: box-03; }
+.box-04 { grid-area: box-04; }
+.box-05 { grid-area: box-05; }
+.box-06 { grid-area: box-06; }
+.box-07 { grid-area: box-07; }
+.box-08 { grid-area: box-08; }
+
+.box-9 { grid-area: box-9; }
+
+.box-11 { grid-area: box-11; }
+.box-12 { grid-area: box-12; }
+.box-13 { grid-area: box-13; }
+.box-14 { grid-area: box-14; }
+.box-15 { grid-area: box-15; }
+.box-16 { grid-area: box-16; }
+.box-17 { grid-area: box-17; }
+.box-18 { grid-area: box-18; }
+
+
+/*----------------------------------------------------*/
+input {
+    padding: 0.5em 1em;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 100px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input:focus{
+    outline: 2px solid #0F8435;
+}
+
+.button-container{
+    margin: 50px 0 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.update{
+    padding: 0.7em 2em;
+    font-size: 1rem;
+    border-radius: 50px;
+    border: none;
+    color: #fff;
+    background-color: #0F8435;
+    cursor: pointer;
+    transition: 0.2s ease-in-out all;
+    box-shadow: 0px 0px 2px grey ;
+}
+
+.update:hover{
+    background-color: #2FA657;
+}

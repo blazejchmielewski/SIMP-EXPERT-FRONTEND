@@ -1,0 +1,86 @@
+a{
+    text-decoration: none;
+}
+
+.container{
+    max-width: 1200px;
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+
+}
+
+.left-container{
+    width: 30%;
+    color: white;
+}
+
+.upper-content-container{
+    background-color: #0F8435;
+    box-sizing: border-box;
+    border-radius: 10px 10px 0 0;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0px 0px 2px grey;
+}
+
+.name-container{
+    margin-top: 20px;
+    text-align: center;
+    line-height: 5px;
+}
+
+.name{
+    font-size: 1.1rem;
+}
+
+.email{
+    font-size: 0.7rem;
+}
+
+.change-panel-card{
+    font-size: 0.8rem;
+    color: #555;
+    padding: 0.7em 1em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s ease-in-out all;
+    border: 1px solid #ddd;
+    border-top: none;
+}
+
+.change-panel-card.change-panel-active {
+    border-left: none
+}
+
+.active-container{
+    position: absolute;
+    width: 10px;
+    background-color: #0F8435;
+    height: calc(100% + 1px);
+    top: -1px;
+    left: -1px;
+}
+
+.change-panel-card svg {
+    margin-right: 10px;
+    fill: #555;
+}
+
+.change-panel-active{
+    background-color: #EEE;
+    overflow: hidden;
+}
+
+.change-panel-card:hover{
+    background-color: #EEE;
+}
+
+/* ---------------------------- PRAWA STRONA ---------------------------- */

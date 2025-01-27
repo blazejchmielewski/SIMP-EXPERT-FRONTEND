@@ -1,0 +1,135 @@
+<div class="container">
+  <div class="top-container">
+    <mat-form-field class="filter-container">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="np. Jan Kowalski" #input>
+    </mat-form-field>
+    <div class="add-user-container">
+      <button class="add-user" (click)="openRegisterDialog()">Dodaj użytkownika</button>
+    </div>
+  </div>
+  <div class="mat-elevation-z8 table-container">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="lp">
+        <th mat-header-cell *matHeaderCellDef> LP </th>
+        <td mat-cell *matCellDef="let i = index"> {{ i + 1 }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="firstname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Imię </th>
+        <td mat-cell *matCellDef="let row"> {{row.firstname}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="lastname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwisko </th>
+        <td mat-cell *matCellDef="let row"> {{row.lastname}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Departament </th>
+        <td mat-cell *matCellDef="let row"> {{row.department}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let row"> {{translateStatus(row.status)}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Miasto </th>
+        <td mat-cell *matCellDef="let row"> {{row.city}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Akcje </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="btn-container">
+            <button class="btn edit" (click)="navigateToUserEdit(element)">Szczegóły</button>
+            <button class="btn block" *ngIf="element.status" (click)="openBlockUserDialog(element)">Zablokuj</button>
+            <button class="btn unlock" *ngIf="!element.status" (click)="openUnlockUserDialog(element)">Odblokuj</button>
+          </div>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[50,100,150,200]" aria-label="Select page of users"></mat-paginator>
+  </div>
+</div>
+
+<!-- ---------------------- DODANIE UŻYTKOWNIKA ---------------------- -->
+<div class="grey-container" *ngIf="showRegisterContainer">
+  <div class="register-container">
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <div class="close-container">
+        <div class="close" (click)="closeDialog()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFF"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        </div>
+      </div>
+      <h1>Dodawanie użytkownika</h1>
+      <div class="input">
+        <input type="text" placeholder="Imię" required [formControl]="controls.firstname">
+        <mat-error *ngIf="controls.firstname.invalid" class="error">{{getErrorMessage(controls.firstname)}}</mat-error>
+      </div>
+      <div class="input">
+          <input type="text" placeholder="Nazwisko" required [formControl]="controls.lastname">
+          <mat-error *ngIf="controls.lastname.invalid" class="error">{{getErrorMessage(controls.lastname)}}</mat-error>
+      </div>
+      <div class="input">
+          <input type="text" placeholder="E-mail" required [formControl]="controls.email">
+          <mat-error *ngIf="controls.email.invalid" class="error">{{getErrorMessage(controls.email)}}</mat-error>
+      </div>
+      <div class="input">
+          <input type="password" placeholder="Hasło" required [formControl]="controls.password">
+          <mat-error *ngIf="controls.password.invalid" class="error">{{getErrorMessage(controls.password)}}</mat-error>
+      </div>
+      <div class="input">
+          <input type="password" placeholder="Potwierdź hasło" required [formControl]="controls.repeatedPassword">
+          <mat-error *ngIf="controls.repeatedPassword.invalid" class="error">{{getErrorMessage(controls.repeatedPassword)}}</mat-error>
+      </div>
+      <button type="submit" class="btn" [disabled]="registerForm.invalid">Dodaj użytkownika</button>
+      <div class="alert-warning alert-dismissible">
+          {{notMatchingPasswordsError}}
+      </div>
+      <div class="alert-warning alert-dismissible fade show" role="alert" *ngIf="errorMsg$ | async as error">
+          {{ error }}
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ---------------------- UNLOCK USER ---------------------- -->
+<div class="grey-container" *ngIf="showUnlockUserContainer">
+  <div class="dialog-user-container container-blue">
+    <div class="close-container">
+      <div class="close" (click)="closeDialog()">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFF"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+      </div>
+    </div>
+    <div class="block-confirm">
+      <p>Napewno chcesz odblokować użytkownika <span class="name-delete">{{user.firstname}} {{user.lastname}}</span></p> 
+    </div>
+    <button class="btn" (click)="unlockUser(user)">Odblokuj</button>
+  </div>
+</div>
+
+<!-- ---------------------- BLOCK USER ---------------------- -->
+<div class="grey-container" *ngIf="showBlockUserContainer">
+    <div class="dialog-user-container container-red">
+      <div class="close-container">
+        <div class="close" (click)="closeDialog()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFF"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        </div>
+      </div>
+      <div class="block-confirm">
+        <p>Napewno chcesz zablokować użytkownika <span class="name-delete">{{user.firstname}} {{user.lastname}}</span></p> 
+      </div>
+      <button class="btn" (click)="blockUser(user)">Zablokuj</button>
+    </div>
+</div>
