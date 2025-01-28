@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UnitType } from 'src/app/modules/core/models/attribute.model';
 import { Attribute, AttributeType, Category, CreateAttributeType, CreateCategory, CreateExpertise, CreateSubCategory, ExpertiseBaseData, Subcategory, Units } from 'src/app/modules/core/models/expertise.model';
@@ -48,12 +48,18 @@ export class ExpertiseCreateComponent implements OnInit {
   
   modalType: 'category' | 'subcategory' | 'attributeType' | 'expertiseFile' = 'category'; 
 
-  firstPageOpen     = false;
-  secondPageOpen    = true;
+  firstPageOpen     = true;
+  secondPageOpen    = false;
   thirdPageOpen     = false;
   fourthPageOpen    = false;
   fifthPageOpen     = false;
   
+  isFirstPageValid    = false;
+  isSecondPageValid   = false;
+  isThirdPageValid    = false;
+  isFourthPageValid   = false;
+  isFifthPageValid    = false;
+
   constructor(
     private expertiseService: ExpertiseService,
     private attributeService: AttributeService,
@@ -61,8 +67,7 @@ export class ExpertiseCreateComponent implements OnInit {
     private unitService: UnitService,
     private formService: FormService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getSubcategories();
@@ -73,42 +78,39 @@ export class ExpertiseCreateComponent implements OnInit {
 
 // --------------- NAVIGATION ---------------
   moveForward(value: number){
-    switch(value){
-      case 1:
-        this.firstPageOpen     = true;
-        this.secondPageOpen    = false;
-        this.thirdPageOpen     = false;
-        this.fourthPageOpen    = false;
-        this.fifthPageOpen     = false;
-        break;
-      case 2:
-        this.firstPageOpen     = false;
-        this.secondPageOpen    = true;
-        this.thirdPageOpen     = false;
-        this.fourthPageOpen    = false;
-        this.fifthPageOpen     = false;
-        break;
-      case 3:
-        this.firstPageOpen     = false;
-        this.secondPageOpen    = false;
-        this.thirdPageOpen     = true;
-        this.fourthPageOpen    = false;
-        this.fifthPageOpen     = false;
-        break;
-      case 4:
-        this.firstPageOpen     = false;
-        this.secondPageOpen    = false;
-        this.thirdPageOpen     = false;
-        this.fourthPageOpen    = true;
-        this.fifthPageOpen     = false;
-        break;
-      case 5:
-        this.firstPageOpen     = false;
-        this.secondPageOpen    = false;
-        this.thirdPageOpen     = false;
-        this.fourthPageOpen    = false;
-        this.fifthPageOpen     = true;
-        break;
+    if(value === 1){
+      this.firstPageOpen     = true;
+      this.secondPageOpen    = false;
+      this.thirdPageOpen     = false;
+      this.fourthPageOpen    = false;
+      this.fifthPageOpen     = false;
+    } else if(value === 2 && this.isFirstPageValid){
+      this.firstPageOpen     = false;
+      this.secondPageOpen    = true;
+      this.thirdPageOpen     = false;
+      this.fourthPageOpen    = false;
+      this.fifthPageOpen     = false;
+    } else if(value === 3){
+      this.isSecondPageValid = true;
+      this.firstPageOpen     = false;
+      this.secondPageOpen    = false;
+      this.thirdPageOpen     = true;
+      this.fourthPageOpen    = false;
+      this.fifthPageOpen     = false;
+    } else if(value === 4){
+      this.isThirdPageValid = true;
+      this.firstPageOpen     = false;
+      this.secondPageOpen    = false;
+      this.thirdPageOpen     = false;
+      this.fourthPageOpen    = true;
+      this.fifthPageOpen     = false;
+    } else if(value === 5){
+      this.isFourthPageValid = true;
+      this.firstPageOpen     = false;
+      this.secondPageOpen    = false;
+      this.thirdPageOpen     = false;
+      this.fourthPageOpen    = false;
+      this.fifthPageOpen     = true;
     }
   }
 
@@ -117,19 +119,32 @@ export class ExpertiseCreateComponent implements OnInit {
   }
 
 // --------------- 1 ---------------
+  
   expertiseGetBaseData() {
+    this.errorMsg = '';
+
     if (this.initCreateExpertiseForm.valid) {
-      const description     = this.initCreateExpertiseForm.getRawValue().description;
-      const subCategoryName = this.initCreateExpertiseForm.getRawValue().subCategoryName;
-      const title           = this.initCreateExpertiseForm.getRawValue().title;
-    
+      const title             = this.initCreateExpertiseForm.getRawValue().title;
+      const description       = this.initCreateExpertiseForm.getRawValue().description;
+      const categoryName      = this.initCreateExpertiseForm.getRawValue().categoryName;
+      const subCategoryName   = this.initCreateExpertiseForm.getRawValue().subCategoryName;
+      
       this.expertiseBaseData = {
+        title: title,
         description: description,
-        subCategoryName: subCategoryName,
-        title: title
+        categoryName: categoryName,
+        subCategoryName: subCategoryName
       }
+
+      this.isFirstPageValid = true;
       this.moveForward(2);
+    } else {
+      this.initCreateExpertiseForm.markAllAsTouched();
     }
+  }
+
+  getErrorMessage(control: FormControl): string{
+    return this.formService.getErrorMessage(control);
   }
 
   getCategories(){
@@ -213,8 +228,7 @@ export class ExpertiseCreateComponent implements OnInit {
     const attribute: Attribute = this.initCreateAttribute.getRawValue();
 
     const isAttributeAlreadyAdded = !this.attributes.some(a => 
-      a.attributeTypeName = attribute.attributeTypeName
-    );
+      a.attributeTypeName = attribute.attributeTypeName);
 
     if(isAttributeAlreadyAdded){
       this.attributeService.validateAttribute(attribute).subscribe({

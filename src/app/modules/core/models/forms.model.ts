@@ -37,6 +37,7 @@ export interface PasswordRecoveryRequest{
 export interface CreateExpertiseRequest{
     title: FormControl<string>;
     description: FormControl<string>;
+    categoryName: FormControl<string>;
     subCategoryName: FormControl<string>;
 }
 

@@ -64,6 +64,7 @@ export interface CreateExpertise{
 export interface ExpertiseBaseData {
     title: string;
     description: string;
+    categoryName: string;
     subCategoryName: string;
 }
 

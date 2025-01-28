@@ -3,7 +3,7 @@
     <div class="nav-up-conent">
       <div class="navigation-content-container">
        <div class="nav-ball">
-        <button class="nav-ball-content third" (click)="moveForward(1)">1</button>
+        <button class="nav-ball-content first" (click)="moveForward(1)">1</button>
        </div>
       </div>
       <div class="line-container">
@@ -12,7 +12,7 @@
 
       <div class="navigation-content-container">
         <div class="nav-ball">
-          <button class="nav-ball-content third" (click)="moveForward(2)">2</button>     
+          <button class="nav-ball-content" [ngClass]="{'second': isFirstPageValid}" (click)="moveForward(2)">2</button>     
         </div>
       </div>
 
@@ -22,7 +22,7 @@
 
       <div class="navigation-content-container">
         <div class="nav-ball">
-          <button class="nav-ball-content third" (click)="moveForward(3)">3</button>
+          <button class="nav-ball-content" [ngClass]="{'third': isSecondPageValid}" (click)="moveForward(3)">3</button>
         </div>
       </div>
      
@@ -32,7 +32,7 @@
 
       <div class="navigation-content-container">
         <div class="nav-ball">
-          <button class="nav-ball-content third" (click)="moveForward(4)">4</button>
+          <button class="nav-ball-content" [ngClass]="{'fourth': isThirdPageValid}" (click)="moveForward(4)">4</button>
         </div>
       </div>
 
@@ -42,7 +42,7 @@
 
       <div class="navigation-content-container">
         <div class="nav-ball">
-          <button class="nav-ball-content third" (click)="moveForward(5)">5</button>
+          <button class="nav-ball-content" [ngClass]="{'fifth': isFourthPageValid}" (click)="moveForward(5)">5</button>
         </div>
       </div>
     </div>
@@ -73,23 +73,23 @@
       <div class="form-group">
         <label for="title">Tytuł</label>
         <input type="text" id="title" name="title" [formControl]="controls.title" placeholder="Wprowadź tytuł">
-        {{errorMsg}}
+        <div class="error">{{getErrorMessage(controls.title)}}</div>
       </div>
       <div class="form-group">
           <label for="description">Opis</label>
           <textarea id="description" name="description" [formControl]="controls.description" placeholder="Wprowadź opis" rows="4"></textarea>
-          <div>{{errorMsg}}</div>
+          <div class="error">{{getErrorMessage(controls.description)}}</div>
       </div>
       <div class="form-group categories">
         <label for="categoryName">Kategoria</label>
         <div>
-        <select id="categoryName" name="categoryName" [formControl]="controls.subCategoryName" (change)="changeCategory($event)">
+        <select id="categoryName" name="categoryName" [formControl]="controls.categoryName" (change)="changeCategory($event)">
           <option *ngFor="let category of categories" [value]="category.id">
             {{ category.name }}
           </option>
         </select>
           <button class="add" (click)="openCategoryModal()">Dodaj kategorie</button>
-          {{errorMsg}}
+          <div class="error">{{getErrorMessage(controls.categoryName)}}</div>
         </div>
         <label for="subCategoryName" class="margin-top">Podkategoria</label>
         <div> 
@@ -99,13 +99,12 @@
             </option>
           </select>
           <button class="add" (click)="openSubCategoryModal()">Dodaj Podkategorie</button>
-          {{errorMsg}}
+          <div class="error">{{getErrorMessage(controls.subCategoryName)}}</div>
         </div>
       </div>
       <div class="button-container">
         <button type="submit" class="button">Przejdź dalej</button>
       </div>
-      
     </form>
     </div>
   </div>
@@ -209,13 +208,13 @@
     {{errorMsg}}
   </div>
   <div class="button-container3">
-    <button type="submit" class="button" (click)="moveForward(5)">Przejdź dalej</button>
+    <button type="submit" class="button" (click)="moveForward(4)">Przejdź dalej</button>
   </div>
 </div>
 
 <!--------------------------4-------------------------->
-<div class="container5" *ngIf="fourthPageOpen">
-  <p>ez2</p>
+<div class="button-container4" *ngIf="fourthPageOpen">
+  <button type="submit" class="button" (click)="moveForward(5)">Przejdź dalej</button>
 </div>
 
 <!--------------------------5-------------------------->

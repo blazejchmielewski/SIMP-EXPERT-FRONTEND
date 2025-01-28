@@ -7,7 +7,6 @@ import { CreateAttibuteRequest, CreateAttibuteTypeRequest, CreateCategoryRequest
   PasswordRecoveryRequest, RegisterRequest, ToGetPasswordRecoveryRequest, 
   UserUpdateRequest} from '../models/forms.model';
 import { equivalentValidator } from '../../shared/validators/equivalent.validator';
-import { first } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -140,11 +139,14 @@ initToGetPasswordRecoveryForm(): FormGroup<ToGetPasswordRecoveryRequest>{
           Validators.maxLength(100)
         ], nonNullable: true,
       }),
+      categoryName: new FormControl('', {
+        validators: [
+          Validators.required,
+        ], nonNullable: true,
+      }),
       subCategoryName: new FormControl('', {
         validators: [
           Validators.required,
-          Validators.minLength(3), 
-          Validators.maxLength(100)
         ], nonNullable: true,
       })
     })
@@ -241,10 +243,8 @@ initToGetPasswordRecoveryForm(): FormGroup<ToGetPasswordRecoveryRequest>{
     });
   }
 
-
-
   getErrorMessage(control: FormControl): string{
-    if(control.hasError('required') && control.touched){
+    if((control.hasError('required') && control.touched)){
       return 'Ta kontrolka jest wymagana'
     }
     if(control.hasError('minlength') && control.touched){

@@ -23,11 +23,10 @@ export class CategoryService {
   }
 
   createCategory(body: CreateCategory):Observable<ApiResponse>{
-      return this.http.post<ApiResponse>(`${this.apiUrl}/create`, body, {withCredentials: true})
-    }
+    return this.http.post<ApiResponse>(`${this.apiUrl}/create`, body, {withCredentials: true})
+  }
   
-    createSubCategory(body: CreateSubCategory):Observable<ApiResponse>{
-      return this.http.post<ApiResponse>(`${this.apiUrl}/subcategory/create`, body, {withCredentials: true})
-    }
-  
+  createSubCategory(body: CreateSubCategory):Observable<ApiResponse>{
+    return this.http.post<ApiResponse>(`${this.apiUrl}/subcategory/create`, body, {withCredentials: true})
+  }
 }
