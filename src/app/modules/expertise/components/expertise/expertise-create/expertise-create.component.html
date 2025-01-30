@@ -213,8 +213,84 @@
 </div>
 
 <!--------------------------4-------------------------->
-<div class="button-container4" *ngIf="fourthPageOpen">
-  <button type="submit" class="button" (click)="moveForward(5)">Przejdź dalej</button>
+<div class="container4" *ngIf="fourthPageOpen">
+  <div class="base-price-container">
+    <h1>Określenie ceny bazowej</h1>
+    <button class="base-price-button">Zaproponuj</button>
+    <div class="base-price-value-container">
+      <input class="base-price-input mt-5"/>
+      <select (change)="changeCurrency($event)">
+        <option *ngFor="let currency of currencies" 
+          class="currency-option"
+          [value]="currency.name">
+          {{currency.name}}
+        </option>
+      </select>
+      <div>
+        {{currency.value | number: '1.2-2'}}
+      </div>
+    </div>
+    <h1 class="mt-5">Korekty</h1>
+    <div class="adjustment-container">
+        <div class="adjustment">
+          <div class="center">
+            <div class="adjustment-enumeration">1</div>
+            <h2>Stopień zużycia technicznego - ubytek wartości z przyczyn fizycznych:</h2>
+          </div>
+          <div>
+              <h2>Wzór:</h2>
+              Zt = [Te ( Te + T ) : 2 T^2] x 100%
+              gdzie: <br>
+              Zt – stopień zużycia technicznego maszyny; <br>
+              Te – ilość lat eksploatacji wycenianej maszyny; <br>
+              T – trwałość maszyny w latach;
+              <h2 class="mt-5">Parametry:</h2>
+              <div class="parameters-container">
+                <label>Te:</label>
+                <input/>
+                <label>T:</label>
+                <input/>
+              </div>
+          </div>
+        </div>
+        <div class="adjustment">
+          <div class="center">
+            <div class="adjustment-enumeration">2</div>
+            <h2>Obliczenie korekty wynikającej z ubytku wartości z przyczyn funkcjonalnych</h2>
+          </div>
+          <div>
+            <h2>Wzór:</h2>
+              k = 1- α (Te – 1) <br>
+              gdzie: <br>
+              k – współczynnik nowoczesności konstrukcji; <br>
+              α – wartość empiryczna zależna od rodzaju szacowanego obiektu <br>
+              α = 0,01 ÷ 0,03. <br>
+              Te – ilość lat eksploatacji wycenianej maszyny;
+          </div>
+          <h2 class="mt-5">Parametry:</h2>
+          <div class="parameters-container">
+            <label>α:</label>
+            <input/>
+            <label>Te:</label>
+            <input/>
+          </div>
+        </div>
+        <div class="adjustment">
+          <div class="center">
+            <div class="adjustment-enumeration">3</div>
+            <h2>Ubytek wartości z przyczyn funkcjonalnych</h2>
+          </div>
+          <div>
+              k = 1 – α (Te -1) = 1 – 0,01 (9 - 1) = 0,920 <br>
+              Ubytek wartości z przyczyn funkcjonalnych wynosi 8% <br>
+              Współczynnik korygujący: Kf = 0,920 <br>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+  <button type="submit" class="button mt-5" (click)="moveForward(5)">Przejdź dalej</button>
 </div>
 
 <!--------------------------5-------------------------->

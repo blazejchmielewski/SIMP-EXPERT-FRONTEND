@@ -12,10 +12,15 @@ body {
     flex-direction: column;
 }
 
-h1 {
+.container h1 {
     text-align: center;
     color: #0F8435;
     margin: 20px 20px 0px 0px;
+}
+
+// UNIVERSAL
+.mt-5{
+  margin-top: 25px;
 }
 
 // --------------- NAWIGACJA ---------------
@@ -472,7 +477,85 @@ table {
 
 // ---------------------------------- 4 ----------------------------------
 
+.container4{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
+.base-price-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.base-price-input {
+  width: 100%;
+  padding: 0.7em 1.2em;
+  border-radius: 100px;
+  font: inherit;
+  border: 1px solid #0F8435;
+  box-sizing: border-box;
+}
+.base-price-value-container{
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.currency-option{
+  text-align: center;
+}
+
+.base-price-button{
+  width: 50%;
+  padding: 0.5em 0.8em;
+  box-sizing: border-box;
+  font: inherit;
+  color: #fff;
+  background-color: #0F8435;
+  border: none;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transition: 0.2s ease-in-out all;
+  cursor: pointer;
+}
+.base-price-button:hover{
+  background-color: #1F9546;
+}
+
+// 
+.adjustment{
+  margin-top: 10px;
+  text-align: left;
+}
+.center{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 20px;
+}
+.adjustment-enumeration{
+  width: 30px;
+  height: 30px;
+  font-size: 1.4rem;
+  border-radius: 50%;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.parameters-container{
+  width: 100px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: fit-content(100%) 1fr;
+  gap: 10px;
+}
 // ---------------------------------- 5 ---------------------------------- 
 .container5{
   width: 100%;

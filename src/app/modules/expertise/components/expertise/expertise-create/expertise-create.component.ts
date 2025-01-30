@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UnitType } from 'src/app/modules/core/models/attribute.model';
-import { Attribute, AttributeType, Category, CreateAttributeType, CreateCategory, CreateExpertise, CreateSubCategory, ExpertiseBaseData, Subcategory, Units } from 'src/app/modules/core/models/expertise.model';
+import { Attribute, AttributeType, Category, CreateAttributeType, CreateCategory, CreateExpertise, CreateSubCategory, Currency, ExpertiseBaseData, Subcategory, Units } from 'src/app/modules/core/models/expertise.model';
 import { CreateAttibuteRequest, CreateAttibuteTypeRequest, CreateCategoryRequest, CreateExpertiseRequest, CreateSubCategoryRequest } from 'src/app/modules/core/models/forms.model';
 import { AttributeService } from 'src/app/modules/core/services/attribute.service';
 import { CategoryService } from 'src/app/modules/core/services/category.service';
 import { ExpertiseService } from 'src/app/modules/core/services/expertise.service';
+import { FinancialService } from 'src/app/modules/core/services/financial.service';
 import { FormService } from 'src/app/modules/core/services/form.service';
 import { UnitService } from 'src/app/modules/core/services/unit.service';
 
@@ -29,6 +30,9 @@ export class ExpertiseCreateComponent implements OnInit {
   expertiseFile!:           File;
   unitTypes:                UnitType[]             = [];
   unitsNames:               string                 = '';
+  
+  currencies:               Currency[]             = [];
+  currency:                Currency                = {name: 'PLN', value: 1.00};
 
   initCreateExpertiseForm: FormGroup<CreateExpertiseRequest>      = this.formService.initCreateExpertise();
   initCreateCategory: FormGroup<CreateCategoryRequest>            = this.formService.initCreateCategory();
@@ -48,16 +52,16 @@ export class ExpertiseCreateComponent implements OnInit {
   
   modalType: 'category' | 'subcategory' | 'attributeType' | 'expertiseFile' = 'category'; 
 
-  firstPageOpen     = true;
+  firstPageOpen     = false;
   secondPageOpen    = false;
   thirdPageOpen     = false;
-  fourthPageOpen    = false;
+  fourthPageOpen    = true;
   fifthPageOpen     = false;
   
   isFirstPageValid    = false;
   isSecondPageValid   = false;
   isThirdPageValid    = false;
-  isFourthPageValid   = false;
+  isFourthPageValid   = true;
   isFifthPageValid    = false;
 
   constructor(
@@ -66,6 +70,7 @@ export class ExpertiseCreateComponent implements OnInit {
     private categoryService: CategoryService,
     private unitService: UnitService,
     private formService: FormService,
+    private financialService: FinancialService,
     private router: Router
   ) {}
 
@@ -74,6 +79,7 @@ export class ExpertiseCreateComponent implements OnInit {
     this.getCategories();
     this.getAttributeTypes();
     this.getUnitTypes();
+    this.getCurrencies();
   }
 
 // --------------- NAVIGATION ---------------
@@ -98,7 +104,7 @@ export class ExpertiseCreateComponent implements OnInit {
       this.fourthPageOpen    = false;
       this.fifthPageOpen     = false;
     } else if(value === 4){
-      this.isThirdPageValid = true;
+      this.isThirdPageValid  = true;
       this.firstPageOpen     = false;
       this.secondPageOpen    = false;
       this.thirdPageOpen     = false;
@@ -372,6 +378,21 @@ export class ExpertiseCreateComponent implements OnInit {
   }
 
 // --------------- 4 ---------------
+
+getCurrencies(){
+  this.financialService.getAllCurriencies().subscribe({
+    next: (resp)=>{
+      this.currencies = resp
+    }, error: (err)=> this.errorMsg = err
+  })
+}
+
+changeCurrency(event: any){
+  const currencyName = event.target.value;
+  this.financialService.getCurrencyByName(currencyName).subscribe({
+    next: (resp)=> {this.currency = resp}, error: (err)=> this.errorMsg = err
+  })
+}
 
 // --------------- 5 ---------------
 onExpertiseFileSelected(event: any): void {

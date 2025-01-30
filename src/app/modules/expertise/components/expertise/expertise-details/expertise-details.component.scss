@@ -6,11 +6,12 @@
   flex-direction: column;
   color: #333;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 20px;
 }
 .container{
   position: relative;
   padding: 30px 20px;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 // ----------------------------------------
@@ -36,6 +37,7 @@
 
 .slider .list img {
   width: 1000px;
+  border-radius: 20px;
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
@@ -96,6 +98,7 @@
 
 // ----------------------------------------
 .values-container{
+  width: 100%;
   margin-top: 20px;
   display: flex;
   justify-content: center;
@@ -110,7 +113,7 @@ h1{
 }
 
 .values-table {
-  width: 600px;
+  width: 100%;
   margin: 20px 0;
   border-collapse: collapse;
   font-size: 16px;
@@ -127,8 +130,9 @@ h1{
 }
 
 .values-table th {
-  background-color: #d2d2d2;
-  font-weight: bold;
+  background-color: #0F8435;
+  color: #fff;
+  font-weight: 500;
 }
 
 .values-table tr:hover {
@@ -154,9 +158,9 @@ h1{
 }
 
 .attributes-table th {
-  background-color: #d2d2d2;
-  color: #333;
-  font-weight: bold;
+  background-color: #0F8435;
+  color: #FFF;
+  font-weight: 500;
 }
 
 .attributes-table tr:nth-child(odd) {

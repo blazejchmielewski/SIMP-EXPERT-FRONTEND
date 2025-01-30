@@ -103,3 +103,8 @@ export interface ImageModel {
     file: File;
     url: string
 }
+
+export interface Currency{
+    name: string;
+    value: number;
+}
