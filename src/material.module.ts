@@ -15,6 +15,7 @@ import { MatNativeDateModule } from "@angular/material/core";
 import {MatSelectModule} from '@angular/material/select';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
     exports: [
@@ -33,7 +34,8 @@ import {MatBadgeModule} from '@angular/material/badge';
         MatNativeDateModule,
         MatSelectModule,
         MatStepperModule,
-        MatBadgeModule
+        MatBadgeModule,
+        MatSliderModule
     ]
 })
 

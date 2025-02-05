@@ -502,14 +502,23 @@ table {
 .base-price-value-container{
   display: flex;
   justify-content: center;
-  align-items: baseline;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid #0F8435;
+  padding: 20px;
+  border-radius: 10px;
   gap: 10px;
 }
 
 .currency-option{
   text-align: center;
 }
-
+.currency-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .base-price-button{
   width: 50%;
   padding: 0.5em 0.8em;
@@ -523,16 +532,31 @@ table {
   transition: 0.2s ease-in-out all;
   cursor: pointer;
 }
+.base-price-button-disabled {
+  background-color: gray;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 .base-price-button:hover{
   background-color: #1F9546;
 }
 
 // 
-.adjustment{
-  margin-top: 10px;
-  text-align: left;
+.adjustment-main-container{
+  padding: 20px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-.center{
+.adjustment{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.enumeration-container{
   width: 100%;
   display: flex;
   justify-content: flex-start;
@@ -549,12 +573,42 @@ table {
   justify-content: center;
   align-items: center;
 }
+.formula-container{
+  width: 100%;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
 .parameters-container{
-  width: 100px;
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: fit-content(100%) 1fr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.parameters-container-left{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.parameters-container-element{
+  width: 100%;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
   gap: 10px;
+}
+.parameters-container-right{
+  width: 300px;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
 }
 // ---------------------------------- 5 ---------------------------------- 
 .container5{

@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { BasicResponse, CreateExpertise, ExpertiseData, ExpertiseDetails, ExpertiseWithImage } from '../models/expertise.model';
+import { BaseResponse, BaseResponseBoolean } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,11 @@ export class ExpertiseService {
     return this.http.get(`${this.apiUrl}/get/image/${uuid}/${index}`, { responseType: 'blob' }).pipe(
       map((blob) => URL.createObjectURL(blob))
     );
+  }
+
+  isProposeBasePricePossible(name: string):Observable<BaseResponseBoolean>{
+    const param = new HttpParams().set('name', name);
+    return this.http.get<BaseResponseBoolean>(`${this.apiUrl}/get/is-base-price-possible`, {params: param, withCredentials: true})
   }
 
   createExpertise(expertise: CreateExpertise, files: File[], expFile: File): Observable<BasicResponse> {

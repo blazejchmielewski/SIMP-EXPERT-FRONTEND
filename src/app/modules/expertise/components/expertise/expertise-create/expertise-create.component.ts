@@ -30,9 +30,16 @@ export class ExpertiseCreateComponent implements OnInit {
   expertiseFile!:           File;
   unitTypes:                UnitType[]             = [];
   unitsNames:               string                 = '';
-  
+  isBasePricePossible:      boolean                = false;
   currencies:               Currency[]             = [];
-  currency:                Currency                = {name: 'PLN', value: 1.00};
+  currency:                 Currency               = {name: 'PLN', value: 1.00};
+
+  sliderValue1:number = 10;
+  sliderValue2:number = 50;
+  sliderValue3:number = 2;
+  sliderValue4:number = 1;
+
+  currentExpertiseValue = 0;
 
   initCreateExpertiseForm: FormGroup<CreateExpertiseRequest>      = this.formService.initCreateExpertise();
   initCreateCategory: FormGroup<CreateCategoryRequest>            = this.formService.initCreateCategory();
@@ -40,7 +47,6 @@ export class ExpertiseCreateComponent implements OnInit {
   initCreateAttribute: FormGroup<CreateAttibuteRequest>           = this.formService.initCreateAttribute();
   initCreateAttributeType: FormGroup<CreateAttibuteTypeRequest>   = this.formService.initCreateAttributeType();
 
-  
   category: CreateCategory              | null = null;
   subCategory: CreateSubCategory        | null = null;
   attributeType: CreateAttributeType    | null = null;
@@ -104,6 +110,9 @@ export class ExpertiseCreateComponent implements OnInit {
       this.fourthPageOpen    = false;
       this.fifthPageOpen     = false;
     } else if(value === 4){
+      if(this.expertiseBaseData?.subCategoryName){
+        this.getBasePrice(this.expertiseBaseData?.subCategoryName);
+      }
       this.isThirdPageValid  = true;
       this.firstPageOpen     = false;
       this.secondPageOpen    = false;
@@ -143,6 +152,7 @@ export class ExpertiseCreateComponent implements OnInit {
       }
 
       this.isFirstPageValid = true;
+      this.getBasePrice(this.expertiseBaseData.subCategoryName)
       this.moveForward(2);
     } else {
       this.initCreateExpertiseForm.markAllAsTouched();
@@ -393,6 +403,55 @@ changeCurrency(event: any){
     next: (resp)=> {this.currency = resp}, error: (err)=> this.errorMsg = err
   })
 }
+
+getBasePrice(name: string){
+  this.expertiseService.isProposeBasePricePossible(name).subscribe({
+    next: (resp) => {
+      this.isBasePricePossible = resp.message;
+      console.log(this.isBasePricePossible)
+    }, error: (err) => {this.errorMsg = err}
+  })
+}
+
+// CALCULATORS:
+  calculateZt(): number {
+    const Te = this.sliderValue1;
+    const T = this.sliderValue2;
+    const Zt = ((Te * (Te + T)) / (2 * Math.pow(T, 2)));
+    if(Zt > 1){
+      return 100;
+    }
+    return Zt * 100;
+  }
+  calculateZtValue(){
+    const zt = this.calculateZt();
+    return this.currentExpertiseValue - (this.currentExpertiseValue*(100 - zt)/100)
+  }
+
+  calculateK(): number {
+    const alpha = this.sliderValue3;
+    const Te = this.sliderValue1;
+    const K = 1 - (alpha/100 * (Te - 1)); 
+   
+    console.log(K)
+    return 100 - (K * 100);
+  }
+  calculateKValue(): number {
+    const K = this.calculateK();
+    return this.currentExpertiseValue - (this.currentExpertiseValue*(100 - K)/100)
+  }
+
+  get priceValue(): number {
+    const Zt = this.calculateZt() / 100;
+    const K = this.calculateK();
+    const result = this.currentExpertiseValue * (1 - Zt) * K;
+    return result;
+  }
+  get finalPrice(): number {
+    const K = this.calculateK();
+    const final = this.priceValue * K;
+    return final;
+  }
 
 // --------------- 5 ---------------
 onExpertiseFileSelected(event: any): void {

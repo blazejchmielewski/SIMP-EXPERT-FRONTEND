@@ -4,6 +4,12 @@ export interface BaseResponse{
     timestamp: Date;
 }
 
+export interface BaseResponseBoolean{
+    code: string;
+    message: boolean;
+    timestamp: Date;
+}
+
 export interface UserDetails{
     uuid: string,
     firstname: string,
