@@ -38,7 +38,6 @@ export class ExpertiseCreateComponent implements OnInit {
   sliderValue2:number = 50;
   sliderValue3:number = 2;
   sliderValue4:number = 1;
-
   currentExpertiseValue = 0;
 
   initCreateExpertiseForm: FormGroup<CreateExpertiseRequest>      = this.formService.initCreateExpertise();
@@ -414,6 +413,7 @@ getBasePrice(name: string){
 }
 
 // CALCULATORS:
+  // 1
   calculateZt(): number {
     const Te = this.sliderValue1;
     const T = this.sliderValue2;
@@ -428,29 +428,35 @@ getBasePrice(name: string){
     return this.currentExpertiseValue - (this.currentExpertiseValue*(100 - zt)/100)
   }
 
+  // 2
   calculateK(): number {
     const alpha = this.sliderValue3;
     const Te = this.sliderValue1;
-    const K = 1 - (alpha/100 * (Te - 1)); 
+    const K = 1 - ((alpha/100) * (Te - 1)); 
    
     console.log(K)
     return 100 - (K * 100);
   }
   calculateKValue(): number {
     const K = this.calculateK();
-    return this.currentExpertiseValue - (this.currentExpertiseValue*(100 - K)/100)
+    return this.currentExpertiseValue - this.currentExpertiseValue*(100 - K)/100;
   }
 
-  get priceValue(): number {
-    const Zt = this.calculateZt() / 100;
-    const K = this.calculateK();
-    const result = this.currentExpertiseValue * (1 - Zt) * K;
-    return result;
+  // 3
+  calculateKe(): number {
+    return this.sliderValue4;
   }
+
+  calculateKeValue(): number {
+    return this.currentExpertiseValue - this.currentExpertiseValue*((100 - this.calculateKe())/100);
+  }
+
   get finalPrice(): number {
-    const K = this.calculateK();
-    const final = this.priceValue * K;
-    return final;
+    return this.currentExpertiseValue 
+    - this.calculateZtValue() 
+    - this.calculateKValue()
+    - this.calculateKeValue()
+    ;
   }
 
 // --------------- 5 ---------------

@@ -300,12 +300,41 @@
           </div>
           <div class="parameters-container-right">
             <h2 class="mt-5">Wynik:</h2>
-            <p>Zt = {{ calculateZt() | number: '1.2-2' }} %</p>
-            <p>Warość: {{ priceValue | number: '1.2-2' }}</p>
-            <p><strong>Ostateczna cena:</strong> {{ finalPrice | number: '1.2-2' }} PLN</p>
+            <p>K = {{ calculateK() | number: '1.2-2' }} %</p>
+            <p>Spadek: -{{ calculateKValue() | number: '1.2-2' }}</p>
           </div>
         </div>
       </div>
+
+      <div class="adjustment">
+        <div class="enumeration-container">
+          <div class="adjustment-enumeration">3</div>
+          <h2>Określanie wpływu skutków zewnętrznych na spadek atrakcyjności rynkowej:</h2>
+        </div>
+        <div class="formula-container">
+          <h2>Wzór:</h2>
+          <p>
+          ke = 1% ÷ 10%. <br>
+          </p>
+        </div>
+        <div class="parameters-container">
+          <div class="parameters-container-left">
+            <h2 class="mt-5">Parametry:</h2>
+            <div class="parameters-container-element">
+              <label>ke:&nbsp;</label>
+              <input type="range" min="0" max="20" step="1" [(ngModel)]="sliderValue4">
+              <p style="text-align: center;">Wartość: {{ sliderValue4 }}</p>
+            </div>
+          </div>
+          <div class="parameters-container-right">
+            <h2 class="mt-5">Wynik:</h2>
+            <p>ke = {{ calculateKe() | number: '1.2-2' }} %</p>
+            <p>Spadek: -{{ calculateKeValue() | number: '1.2-2' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="mt-5"><strong>Ostateczna cena:</strong> {{ finalPrice | number: '1.2-2' }} PLN</h2>
     </div>
   </div>
   <button type="submit" class="button mt-5" (click)="moveForward(5)">Przejdź dalej</button>
