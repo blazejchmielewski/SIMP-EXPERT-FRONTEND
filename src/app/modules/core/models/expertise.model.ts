@@ -1,9 +1,9 @@
-export interface BasicResponse{
-    code: string;
-    message: string;
+export interface ApiResponse<T> {
+    code: number;
+    message: T;
     timestamp: Date;
 }
-
+  
 
 export interface Expertise{
     title: string;
@@ -41,18 +41,6 @@ export interface ExpertiseDetails{
     ownerEmail: string;
     attributes: Attribute[];
 }
-
-export interface Category{
-    id: number;
-    name: string;
-}
-
-export interface Subcategory{
-    id: number;
-    name: string;
-    categoryId: number;
-}
-
 export interface CreateExpertise{
     title: string;
     description: string;
@@ -67,6 +55,17 @@ export interface ExpertiseBaseData {
     categoryName: string;
     subCategoryName: string;
 }
+// -------------
+export interface Category{
+    id: number;
+    name: string;
+}
+
+export interface Subcategory{
+    id: number;
+    name: string;
+    categoryId: number;
+}
 
 export interface CreateCategory{
     name: string
@@ -77,23 +76,21 @@ export interface CreateSubCategory{
     categoryName: string;
 }
 
-export interface CreateAttributeType{
-    attributeTypeName: string;
-    unitTypeId: number;
-}
-
-//// 
+// -------------
 export interface Attribute {
     value: string;
     attributeTypeName: string;
     unitName: string;
 }
-
+export interface CreateAttributeType{
+    attributeTypeName: string;
+    unitTypeId: number;
+}
 export interface AttributeType{
     id: number;
     name:string;
 }
-
+// -------------
 export interface Units{
     id: number;
     name:string;
@@ -104,7 +101,34 @@ export interface ImageModel {
     url: string
 }
 
+// ------------- MONEY
+export interface Money{
+    amount: number;
+    currency: Currency;
+}
+export interface CurrencyRate{
+    currency: string;
+    code: string;
+    mid: number
+}
+export interface ExchangeRate{
+    id: number;
+    currency: Currency;
+    rate: number;
+    timestamp: Date;
+}
 export interface Currency{
+    id: number;
+    code: string;
     name: string;
-    value: number;
+}
+export interface Devaluation{
+    id:number
+    money: Money;
+    devaluationCause: DevaluationCause;
+}
+export interface DevaluationCause {
+    id: number;
+    name: string;
+    description: string;
 }

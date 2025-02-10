@@ -2,8 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { Attribute, AttributeType, BasicResponse, CreateAttributeType, Units } from '../models/expertise.model';
-import { CreateAttibuteRequest } from '../models/forms.model';
+import { ApiResponse, Attribute, AttributeType, CreateAttributeType, Units } from '../models/expertise.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +22,12 @@ export class AttributeService {
     return this.http.get<Units[]>(`${this.apiUrl}/units-for-attribute-type`, {params: param})
   }
 
-  createAttributeType(body: CreateAttributeType):Observable<BasicResponse>{
+  createAttributeType(body: CreateAttributeType):Observable<ApiResponse<string>>{
     console.log(body)
-    return this.http.post<BasicResponse>(`${this.apiUrl}/attribute-type/create`, body, {withCredentials:true})
+    return this.http.post<ApiResponse<string>>(`${this.apiUrl}/attribute-type/create`, body, {withCredentials:true})
   }
 
-  validateAttribute(body: Attribute):Observable<BasicResponse>{
-    return this.http.post<BasicResponse>(`${this.apiUrl}/validate`, body, {withCredentials:true})
+  validateAttribute(body: Attribute):Observable<ApiResponse<string>>{
+    return this.http.post<ApiResponse<string>>(`${this.apiUrl}/validate`, body, {withCredentials:true})
   }
 }

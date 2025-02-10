@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { UnitType } from '../models/attribute.model';
-import { BasicResponse } from '../models/expertise.model';
+import { ApiResponse } from '../models/expertise.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,8 @@ export class UnitService {
     return this.http.get<UnitType[]>(`${this.apiUrl}/get-all`, { withCredentials: true });
   }
 
-  getUnitsByType(id: string):Observable<BasicResponse>{
+  getUnitsByType(id: string):Observable<ApiResponse<string>>{
     const param = new HttpParams().set("id", id);
-    return this.http.get<BasicResponse>(`${this.apiUrl}/units-by-type`, {params: param, withCredentials: true})
+    return this.http.get<ApiResponse<string>>(`${this.apiUrl}/units-by-type`, {params: param, withCredentials: true})
   }
 }

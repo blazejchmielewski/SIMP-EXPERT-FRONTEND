@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UnitType } from 'src/app/modules/core/models/attribute.model';
-import { Attribute, AttributeType, Category, CreateAttributeType, CreateCategory, CreateExpertise, CreateSubCategory, Currency, ExpertiseBaseData, Subcategory, Units } from 'src/app/modules/core/models/expertise.model';
+import { Attribute, AttributeType, Category, CreateAttributeType, CreateCategory, CreateExpertise, CreateSubCategory, Currency, CurrencyRate, Devaluation, DevaluationCause, ExpertiseBaseData, Money, Subcategory, Units } from 'src/app/modules/core/models/expertise.model';
 import { CreateAttibuteRequest, CreateAttibuteTypeRequest, CreateCategoryRequest, CreateExpertiseRequest, CreateSubCategoryRequest } from 'src/app/modules/core/models/forms.model';
 import { AttributeService } from 'src/app/modules/core/services/attribute.service';
 import { CategoryService } from 'src/app/modules/core/services/category.service';
@@ -18,21 +18,26 @@ import { UnitService } from 'src/app/modules/core/services/unit.service';
 })
 export class ExpertiseCreateComponent implements OnInit {
 
-  errorMsg:                 string          | null = '';
-  subcategories:            Subcategory[]   | null = [];
-  categories:               Category[]      | null = [];
-  filteredSubcategories:    Subcategory[]   | null = [];
-  attributes:               Attribute[]            = [];
-  attributeTypes:           AttributeType[] | null = [];
-  units:                    Units[]         | null = [];
-  images:                   string[]               = [];
-  filesToUpload:            File[]                 = [];
+  errorMsg:                 string          | null  = '';
+  subcategories:            Subcategory[]   | null  = [];
+  categories:               Category[]      | null  = [];
+  filteredSubcategories:    Subcategory[]   | null  = [];
+  attributes:               Attribute[]             = [];
+  attributeTypes:           AttributeType[] | null  = [];
+  units:                    Units[]         | null  = [];
+  images:                   string[]                = [];
+  filesToUpload:            File[]                  = [];
   expertiseFile!:           File;
-  unitTypes:                UnitType[]             = [];
-  unitsNames:               string                 = '';
-  isBasePricePossible:      boolean                = false;
-  currencies:               Currency[]             = [];
-  currency:                 Currency               = {name: 'PLN', value: 1.00};
+  unitTypes:                UnitType[]              = [];
+  unitsNames:               string                  = '';
+  isBasePricePossible:      boolean                 = false;
+  currencies:               Currency[]              = [];
+  currencyRate:             CurrencyRate            = {currency: 'Polski złoty', code: 'PLN', mid: 1.00};
+  
+  devaluations:             Devaluation[]           = [];
+  devaluationCauses:        DevaluationCause[]      = [];
+  devaluationValue:         number                  = 0;
+  devaluationCause:         DevaluationCause | null = null;
 
   sliderValue1:number = 10;
   sliderValue2:number = 50;
@@ -85,6 +90,7 @@ export class ExpertiseCreateComponent implements OnInit {
     this.getAttributeTypes();
     this.getUnitTypes();
     this.getCurrencies();
+    this.getDevaluationCauses();
   }
 
 // --------------- NAVIGATION ---------------
@@ -248,7 +254,6 @@ export class ExpertiseCreateComponent implements OnInit {
     if(isAttributeAlreadyAdded){
       this.attributeService.validateAttribute(attribute).subscribe({
         next: (resp) => {
-          console.log(resp);
           if (resp.message === 'Valid') {
             const newAttribute: Attribute = {
               value: attribute.value.toUpperCase(),
@@ -398,8 +403,8 @@ getCurrencies(){
 
 changeCurrency(event: any){
   const currencyName = event.target.value;
-  this.financialService.getCurrencyByName(currencyName).subscribe({
-    next: (resp)=> {this.currency = resp}, error: (err)=> this.errorMsg = err
+  this.financialService.getCurrencRateByCode(currencyName).subscribe({
+    next: (resp)=> {this.currencyRate = resp}, error: (err)=> this.errorMsg = err
   })
 }
 
@@ -407,7 +412,6 @@ getBasePrice(name: string){
   this.expertiseService.isProposeBasePricePossible(name).subscribe({
     next: (resp) => {
       this.isBasePricePossible = resp.message;
-      console.log(this.isBasePricePossible)
     }, error: (err) => {this.errorMsg = err}
   })
 }
@@ -433,8 +437,6 @@ getBasePrice(name: string){
     const alpha = this.sliderValue3;
     const Te = this.sliderValue1;
     const K = 1 - ((alpha/100) * (Te - 1)); 
-   
-    console.log(K)
     return 100 - (K * 100);
   }
   calculateKValue(): number {
@@ -456,7 +458,50 @@ getBasePrice(name: string){
     - this.calculateZtValue() 
     - this.calculateKValue()
     - this.calculateKeValue()
+    - this.calculateDevaluationValue()
     ;
+  }
+
+// DEVALUATIONS
+  getDevaluationCauses(){
+    this.financialService.getAllDevaluationCauses().subscribe({
+      next: (resp)=>{this.devaluationCauses = resp.message},
+      error: (err)=>{this.errorMsg = err}
+    })
+  }
+
+  addDevaluationCause() {
+    if (this.devaluationCause && this.devaluationValue) {
+      const currency = this.currencies.filter(n => n.code === this.currencyRate.code)[0];
+      const devaluationAmount = { amount: this.devaluationValue, currency: currency };
+
+      const devaluationCause = {
+        id: this.devaluationCause.id,
+        name: this.devaluationCause.name,
+        description: this.devaluationCause.description
+      };
+  
+      const newDevaluation: Devaluation = {
+        id: this.devaluations.length + 1,
+        money: devaluationAmount,
+        devaluationCause: devaluationCause
+      };
+      this.devaluations.push(newDevaluation);
+    }
+  }
+  
+  deleteDevaluationCause(id: number){
+    this.devaluations = this.devaluations.filter(devaluation => devaluation.id !== id);
+  }
+
+  calculateDevaluationValue(): number{
+    if (!this.devaluations || this.devaluations.length === 0) {
+      return 0;
+    } else {
+      return this.devaluations.reduce((total, devaluation) => {
+        return Number(total) + Number(devaluation.money.amount);
+      }, 0);
+    }
   }
 
 // --------------- 5 ---------------

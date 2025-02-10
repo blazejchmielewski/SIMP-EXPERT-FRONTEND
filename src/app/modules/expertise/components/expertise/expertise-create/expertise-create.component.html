@@ -224,12 +224,12 @@
       <select (change)="changeCurrency($event)">
         <option *ngFor="let currency of currencies" 
           class="currency-option"
-          [value]="currency.name">
-          {{currency.name}}
+          [value]="currency.code">
+          {{currency.code}}
         </option>
       </select>
       <div class="currency-container">
-        kurs: {{currency.value | number: '1.2-2'}}
+        kurs: {{currencyRate.mid | number: '1.2-2'}}
       </div>
     </div>
 
@@ -268,7 +268,7 @@
           <div class="parameters-container-right">
             <h2 class="mt-5">Wynik:</h2>
             <p>Zt = {{ calculateZt() | number: '1.2-2'}} %</p>
-            <p>Spadek: -{{ calculateZtValue() | number: '1.2-2'}} {{currency.name}}</p>
+            <p>Spadek: -{{ calculateZtValue() | number: '1.2-2'}} {{currencyRate.code}}</p>
           </div>
         </div>
       </div>
@@ -334,7 +334,49 @@
         </div>
       </div>
 
-      <h2 class="mt-5"><strong>Ostateczna cena:</strong> {{ finalPrice | number: '1.2-2' }} PLN</h2>
+      
+
+      
+      <div class="devaluation-container mt-5">
+        <h2>KOSZTY</h2>
+        <div class="row">
+          <label for="devaluation">Powód:</label>
+          <select name="devaluation" id="devaluation" [(ngModel)]="devaluationCause">
+            <option *ngFor="let cause of devaluationCauses; " [ngValue]="cause">{{cause.description}}</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="devaluation-value">Wartość:</label>
+          <input type="text" id="devaluation-value" placeholder="100.00" [(ngModel)]="devaluationValue">
+        </div>
+        <button class="button mt-5" (click)="addDevaluationCause()">Dodaj koszt</button>
+        <div>
+          <table class="devaluation-table">
+            <thead>
+              <tr>
+                <td class="devaluation-table-header">Powód</td>
+                <td class="devaluation-table-header">Wartość</td>
+                <td class="devaluation-table-header">Akcja</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let devaluation of devaluations">
+                <td>{{devaluation.devaluationCause.description}}</td>
+                <td>{{devaluation.money.amount}} {{this.currencyRate.code}}</td>
+                <td><button class="devaluation-delete" (click)="deleteDevaluationCause(devaluation.id)">Usuń</button></td>
+              </tr>
+              <tr>
+                <td>Suma:</td>
+                <td><strong>{{this.calculateDevaluationValue()}}</strong> {{this.currencyRate.code}}</td>
+              </tr>
+            </tbody>
+          </table>  
+        </div>
+      </div>
+      
+
+
+      <h1 class="mt-5"><strong>Ostateczna cena:</strong> {{ finalPrice | number: '1.2-2' }} PLN</h1>
     </div>
   </div>
   <button type="submit" class="button mt-5" (click)="moveForward(5)">Przejdź dalej</button>

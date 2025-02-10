@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { BasicResponse, CreateExpertise, ExpertiseData, ExpertiseDetails, ExpertiseWithImage } from '../models/expertise.model';
-import { BaseResponse, BaseResponseBoolean } from '../models/user.model';
+import { ApiResponse, CreateExpertise, ExpertiseDetails, ExpertiseWithImage } from '../models/expertise.model';
+import { BaseResponseBoolean } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +37,7 @@ export class ExpertiseService {
     return this.http.get<BaseResponseBoolean>(`${this.apiUrl}/get/is-base-price-possible`, {params: param, withCredentials: true})
   }
 
-  createExpertise(expertise: CreateExpertise, files: File[], expFile: File): Observable<BasicResponse> {
+  createExpertise(expertise: CreateExpertise, files: File[], expFile: File): Observable<ApiResponse<string>> {
     const formDataToSend = new FormData();
     formDataToSend.append('expertiseData', new Blob([JSON.stringify(expertise)], { type: 'application/json' }));
     if (files && files.length > 0) {
@@ -47,7 +47,7 @@ export class ExpertiseService {
     }
     formDataToSend.append('expertiseFile', expFile, expFile.name);
 
-    return this.http.post<BasicResponse>(`${this.apiUrl}/create`, formDataToSend, {
+    return this.http.post<ApiResponse<string>>(`${this.apiUrl}/create`, formDataToSend, {
       withCredentials: true,
     });
   }
